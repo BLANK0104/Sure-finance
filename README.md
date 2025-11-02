@@ -1,271 +1,231 @@
-# 💳 Credit Card Statement PDF Parser# Credit Card Statement PDF Parser (Streamlit)
+# Credit Card Statement PDF Parser
 
+## Overview
 
+This application extracts financial data from credit card statement PDFs for multiple major issuers. It uses pattern matching and text analysis to identify and extract key data points while maintaining data privacy through local processing. The project provides a Streamlit web interface and a command-line option to parse statements from Chase, Bank of America, Citi, American Express, and Capital One.
 
-A powerful Streamlit web application that automatically extracts key financial data from credit card statement PDFs across 5 major issuers.This project provides a Streamlit web interface that parses credit card statement PDFs and extracts five key data points across the five major issuers: Chase, Bank of America, Citi, American Express, and Capital One.
+## Supported Financial Institutions
 
+- Chase
+- Bank of America
+- Citi
+- American Express
+- Capital One
 
+## Extracted Data Points
 
-## 🎯 Project Overview### Supported Credit Card Issuers (5)
+The parser extracts the following information from each statement:
 
-- **Chase**
+1. Issuer — Financial institution name (automatically detected)  
+2. Cardholder Name — Primary account holder  
+3. Card Last 4 Digits — Last four digits of the card number  
+4. Statement Period — Billing cycle date range  
+5. Payment Due Date — Payment deadline (ISO format)  
+6. New Balance — Outstanding balance amount
 
-This solution addresses the challenge of manually extracting information from credit card statements by providing an automated parser that handles real-world PDF formats from multiple credit card providers.- **Bank of America**
+## Installation
 
-- **Citi**
+### Prerequisites
 
-### Supported Credit Card Issuers (5)- **American Express**
+- Python 3.8 or higher  
+- pip package manager
 
-- **Chase**- **Capital One**
+### Setup
 
-- **Bank of America**
+1. Navigate to the project directory:
 
-- **Citi**### Extracted Data Points (6)
+```bash
+cd "e:\Projects\Sure finance"
+```
 
-- **American Express**1. 🏦 **Issuer** - Credit card company name (auto-detected)
+2. (Optional) Create and activate a virtual environment:
 
-- **Capital One**2. 👤 **Cardholder Name** - Account holder name
-
-3. 💳 **Card Last 4 Digits** - Last 4 digits of the card number
-
-### Extracted Data Points (6)4. 📅 **Statement Period** - Billing cycle dates
-
-1. 🏦 **Issuer** - Credit card company name (auto-detected)5. ⏰ **Payment Due Date** - Payment deadline
-
-2. 👤 **Cardholder Name** - Account holder name6. 💰 **New Balance** - Total amount due
-
-3. 💳 **Card Last 4 Digits** - Last 4 digits of the card number
-
-4. 📅 **Statement Period** - Billing cycle datesImportant notes:
-
-5. ⏰ **Payment Due Date** - Payment deadline- Do NOT commit or share real statements publicly. Use the app locally and keep files private.
-
-6. 💰 **New Balance** - Total amount due- The parser uses heuristics and issuer-specific patterns; it should work on many real statements but may fail on uncommon layouts.
-
-
-
-## 🚀 Quick StartHow to run (Windows, cmd.exe):
-
-
-
-### Prerequisites1. Create a virtual environment (optional but recommended):
-
-- Python 3.8 or higher installed on your system
-
-- Internet connection for installing packages```
-
+Windows (cmd.exe):
+```bash
 python -m venv .venv
-
-### Installation (Global Python - No Virtual Environment).venv\Scripts\activate
-
+.venv\Scripts\activate
 ```
 
-1. **Navigate to project directory**
+macOS/Linux:
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
 
-   ```bash2. Install dependencies:
+3. Install required dependencies:
 
-   cd "e:\Projects\Sure finance"
-
-   ``````
-
+```bash
 pip install -r requirements.txt
-
-2. **Install required packages globally**```
-
-   ```bash
-
-   pip install -r requirements.txt3. Run the Streamlit app:
-
-   ```
-
 ```
 
-   This will install:streamlit run app.py
+Verify installation:
 
-   - `pdfplumber` - PDF text extraction```
-
-   - `PyMuPDF` - Additional PDF processing support
-
-   - `streamlit` - Web interface framework4. Open the displayed URL in your browser and upload real PDF statements.
-
-   - `pandas` - Data manipulation
-
-   - `python-dateutil` - Date parsingWhat you'll see:
-
-- Upload one or multiple PDFs.
-
-3. **Run the application**- The app shows detected issuer and extracted fields per PDF and lets you download results as CSV.
-
-   ```bash
-
-   streamlit run app.pyNext steps & caveats:
-
-   ```- Improve table parsing (for transactions) using a table-extraction tool (Camelot / tabula) if you need per-transaction extraction (requires ghostscript / Java).
-
-- Add more issuer-specific tweaks if you have a set of sample statements to tune against.
-
-4. **Access the web interface**
-
-   - The app will automatically open in your default browserPrivacy: The app runs locally. Keep input PDFs private and delete them after parsing.
-
-   - Or manually navigate to: `http://localhost:8501`
-
-## 📖 How to Use
-
-1. **Prepare Your Statements**
-   - Gather credit card statement PDFs from any of the 5 supported issuers
-   - Ensure PDFs are not password-protected
-
-2. **Upload Files**
-   - Click the "Upload one or more PDF statements" button
-   - Select one or multiple PDF files
-   - The app supports batch processing
-
-3. **View Results**
-   - Processing happens automatically with a progress indicator
-   - Results are displayed in a structured table
-   - View detailed information for each statement in expandable sections
-
-4. **Download Data**
-   - Export results as CSV for spreadsheet analysis
-   - Export results as JSON for programmatic use
-   - Filenames include timestamps for easy organization
-
-## 🛠️ Technical Implementation
-
-### Architecture
-```
-app.py           - Streamlit UI and main application logic
-pdf_parser.py    - Core PDF parsing engine with issuer-specific patterns
-requirements.txt - Python dependencies
-README.md        - Documentation
+```bash
+python test_imports.py
 ```
 
-### Key Features
+Important notes:
+- Do not commit or share real statements publicly. Use the application locally and keep files private.
+- The parser uses heuristics and issuer-specific patterns; it may fail on uncommon layouts.
 
-#### Robust Parsing Engine
-- **Multi-pattern matching**: Uses regex patterns with fallbacks for each data point
-- **Issuer-specific logic**: Tailored extraction rules for each credit card company
-- **Error handling**: Gracefully handles malformed PDFs and missing data
-- **Date normalization**: Converts various date formats to ISO standard
+## Quick Start
 
-#### User-Friendly Interface
-- **Batch processing**: Handle multiple statements at once
-- **Progress tracking**: Visual feedback during processing
-- **Summary statistics**: Quick overview of parsing results
-- **Detailed views**: Expandable sections for each statement
-- **Export options**: Multiple download formats
+To run the Streamlit web interface:
 
-#### Production-Ready Code
-- **Type hints**: Clear function signatures
-- **Error reporting**: Detailed error messages for debugging
-- **Clean separation**: UI logic separated from parsing logic
-- **Extensible design**: Easy to add new issuers or data points
+```bash
+streamlit run app.py
+```
 
-### How It Works
+The application will launch in the default web browser at http://localhost:8501.
 
-1. **PDF Text Extraction**
-   - Uses `pdfplumber` to extract text from each PDF page
-   - Combines all pages into a single text block for analysis
+For direct command-line processing:
 
-2. **Issuer Detection**
-   - Searches for issuer names/keywords in the extracted text
-   - Applies issuer-specific parsing rules
-
-3. **Data Point Extraction**
-   - Uses regex patterns to locate and extract each data point
-   - Falls back to generic patterns if issuer-specific ones fail
-   - Validates and formats extracted data
-
-4. **Result Compilation**
-   - Aggregates data from all PDFs into a pandas DataFrame
-   - Provides multiple viewing and export options
-
-## 📊 Example Output
-
-| Status | Filename | Issuer | Cardholder Name | Card Last 4 | Statement Period | Payment Due Date | New Balance |
-|--------|----------|--------|-----------------|-------------|------------------|------------------|-------------|
-| ✅ | chase_jan.pdf | chase | John Doe | 1234 | 12/01/2024 to 12/31/2024 | 2025-01-25 | $1,234.56 |
-| ✅ | amex_feb.pdf | american express | Jane Smith | 5678 | 01/01/2025 to 01/31/2025 | 2025-02-20 | $2,345.67 |
-
-## 🔒 Privacy & Security
-
-- ⚠️ **All processing happens locally** - No data is sent to external servers
-- 📁 **Temporary file handling** - PDFs are deleted immediately after processing
-- 🔐 **Keep statements private** - Do not commit real statements to version control
-- 🗑️ **Delete exports** - Remove downloaded CSVs/JSONs after use
-
-## 🧪 Testing
-
-To test the parser from command line:
 ```bash
 python pdf_parser.py path/to/statement.pdf
 ```
 
-## 🔧 Customization
+## Usage
 
-### Adding New Issuers
-1. Add issuer name to `ISSUERS` list in `pdf_parser.py`
-2. Create issuer-specific regex patterns in `extract_fields_from_text()`
-3. Add detection keywords in `detect_issuer()`
+1. Open the web interface or use the command line.  
+2. Click the upload button to select PDF files (batch upload supported).  
+3. The system processes each file and displays extracted data.  
+4. Results can be exported in CSV or JSON format.
 
-### Adding New Data Points
-1. Add field to result dictionary in `extract_fields_from_text()`
-2. Create regex patterns for the new data point
-3. Update UI in `app.py` to display the new field
+## Project Structure
 
-## 📦 Dependencies
+- app.py — Streamlit web interface and main application logic  
+- pdf_parser.py — Core parsing engine with issuer-specific patterns  
+- generate_mock_statements.py — Test data generator  
+- requirements.txt — Python dependencies  
+- test_imports.py — Package verification utility  
+- .gitignore — Version control exclusions  
+- README.md — Documentation
 
+## Technical Architecture
+
+### Processing Pipeline
+
+1. PDF Text Extraction: Uses pdfplumber to extract text from each PDF page.  
+2. Issuer Detection: Identifies the financial institution through keyword matching.  
+3. Pattern Matching: Applies regular expressions to locate specific data points.  
+4. Data Validation: Formats and validates extracted information.  
+5. Result Compilation: Aggregates data into a structured format (pandas DataFrame).
+
+Recommendations:
+- Improve table parsing for transactions using a table-extraction tool (for transaction-level extraction).
+- Add issuer-specific tweaks based on sample statements to increase accuracy.
+
+## Key Features
+
+- Local processing: No external servers required.  
+- Multi-pattern matching with fallback mechanisms.  
+- Issuer-specific extraction logic.  
+- Batch processing support.  
+- Export options: CSV and JSON.  
+- Error handling to continue processing despite individual file failures.
+
+## Privacy and Security
+
+- All processing occurs locally. No data is sent to external servers.  
+- Temporary files are deleted immediately after processing.  
+- Do not commit real statements to version control. Delete exported files after use.
+
+## Testing
+
+### Mock Statement Generator
+
+Generate test PDFs without using real financial data:
+
+```bash
+python generate_mock_statements.py
 ```
-pdfplumber==0.7.6      # PDF text extraction
-PyMuPDF==1.22.5        # Additional PDF processing
-streamlit==1.26.0      # Web UI framework
-pandas==2.2.2          # Data manipulation
-python-dateutil==2.8.2 # Date parsing
-```
 
-## 🎓 Implementation Quality Highlights
+This creates mock statements in a `mock_statements` directory for testing and tuning.
 
-1. **Functionality**: Handles real-world PDFs from 5 major issuers with robust error handling
-2. **Code Quality**: Clean, documented, type-hinted code following best practices
-3. **User Experience**: Intuitive interface with progress tracking and multiple export options
-4. **Production Ready**: Comprehensive error handling, logging, and privacy considerations
-5. **Extensibility**: Modular design makes it easy to add new issuers and data points
+### Performance
 
-## 🐛 Troubleshooting
+- Processing speed: approximately 1–2 seconds per PDF for typical statements.  
+- Batch capability: supports processing multiple files concurrently.  
+- Memory usage: minimal for typical statement sizes.
 
-**Issue**: Package installation fails
-- Solution: Ensure pip is up to date: `python -m pip install --upgrade pip`
+## Troubleshooting
 
-**Issue**: PDF fails to parse
-- Check if PDF is password-protected (not supported)
-- Verify the PDF is from a supported issuer
-- Check if PDF contains actual text (not just images)
+Common issues and remedies:
 
-**Issue**: Data not extracted correctly
-- Some statements may have non-standard formats
-- Check the detailed view for partial data
-- Consider adding custom patterns for specific statement formats
+- Package installation fails:
+    ```bash
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+    ```
 
-## 📝 Notes
+- PDF parsing errors:
+    - Ensure PDFs are not password-protected.
+    - Confirm the PDF contains selectable text (not just images).
+    - Check that the issuer is supported.
 
-- The parser uses heuristics and may not work on all statement variations
-- Tested with real credit card statements (do not share publicly)
-- Performance: Can process 10+ statements in seconds
-- Compatible with Windows, macOS, and Linux
+- Missing data:
+    - Some statement formats may vary. Review detailed view for partial extractions and consider adding custom patterns.
 
-## 🤝 Future Enhancements
+## Example Output
 
-- [ ] Add OCR support for image-based PDFs
-- [ ] Extract transaction-level details
-- [ ] Support for more issuers (Discover, US Bank, etc.)
-- [ ] ML-based field extraction for better accuracy
-- [ ] Database storage for historical tracking
+The application displays a table of extracted results and supports downloading CSV or JSON exports. Example columns:
 
-## ⚖️ License
+| Status | Filename | Issuer | Cardholder Name | Card Last 4 | Statement Period | Payment Due Date | New Balance |
 
-This project is for educational and personal use. Keep financial documents confidential.
+## Dependencies
+
+Key packages included in requirements.txt:
+
+- pdfplumber — PDF text extraction  
+- PyMuPDF — Additional PDF processing support  
+- streamlit — Web interface framework  
+- pandas — Data manipulation  
+- python-dateutil — Date parsing  
+- reportlab — PDF generation (testing)
+
+## Customization and Extensibility
+
+To add a new issuer:
+
+1. Add issuer name to the ISSUERS list in pdf_parser.py.  
+2. Create extraction regex patterns for the new issuer format in extract_fields_from_text().  
+3. Add detection keywords to detect_issuer().  
+4. Test with sample statements and update the UI as needed.
+
+To add new data points:
+
+1. Add the field to the result dictionary in extract_fields_from_text().  
+2. Create regex patterns or rule-based extraction logic.  
+3. Update the UI in app.py to display the new field.
+
+## Limitations
+
+- Text-based PDFs only; OCR is not included.  
+- Password-protected PDFs are not supported.  
+- Accuracy depends on statement layout consistency; non-standard formats may require manual verification.
+
+## Development Notes and Best Practices
+
+- Use type hints and maintain clear function signatures.  
+- Separate UI logic from parsing logic.  
+- Keep confidential documents out of version control.  
+- Delete temporary and exported files after use.
+
+## Future Enhancements
+
+- Add OCR support for image-based PDFs.  
+- Extract transaction-level details.  
+- Support additional issuers (e.g., Discover, US Bank).  
+- Implement machine learning-based extraction for improved accuracy.  
+- Add optional database storage for historical tracking.
+
+## License
+
+This project is intended for educational and personal use. Users are responsible for handling financial documents appropriately and in compliance with applicable laws and policies.
+
+## Contact
+
+For technical issues or questions, refer to the inline documentation and code comments. Submit issues via the project's issue tracker.
 
 ---
-
-**Built with Python, Streamlit, and pdfplumber** 🐍
+Built with Python, Streamlit, and pdfplumber.

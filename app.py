@@ -12,34 +12,32 @@ from pdf_parser import parse_pdf
 
 st.set_page_config(
     page_title="Credit Card Statement Parser",
-    layout="wide",
-    page_icon="💳"
+    layout="wide"
 )
 
-# Header with styling
-st.title("💳 Credit Card Statement PDF Parser")
+st.title("Credit Card Statement PDF Parser")
 
 st.markdown("""
-    ### Extract Key Information from Credit Card Statements
+    ### Automated Data Extraction System
     
-    **Supported Issuers:** Chase, Bank of America, Citi, American Express, Capital One
+    **Supported Financial Institutions:** Chase, Bank of America, Citi, American Express, Capital One
     
     **Extracted Data Points:**
-    1. 🏦 **Issuer** - Credit card company name
-    2. 👤 **Cardholder Name** - Account holder name
-    3. 💳 **Card Last 4 Digits** - Last 4 digits of card number
-    4. 📅 **Statement Period** - Billing cycle dates
-    5. ⏰ **Payment Due Date** - When payment is due
-    6. 💰 **New Balance** - Total amount due
+    1. **Issuer** - Financial institution identification
+    2. **Cardholder Name** - Primary account holder
+    3. **Card Last 4 Digits** - Partial account number
+    4. **Statement Period** - Billing cycle date range
+    5. **Payment Due Date** - Payment deadline
+    6. **New Balance** - Outstanding balance amount
     
     ---
 """)
 
 uploaded_files = st.file_uploader(
-    "📁 Upload one or more PDF statements", 
+    "Upload PDF Statements", 
     type=["pdf"], 
     accept_multiple_files=True,
-    help="Select one or more credit card statement PDFs from your computer"
+    help="Select one or more credit card statement PDFs"
 )
 
 if uploaded_files:
@@ -64,7 +62,7 @@ if uploaded_files:
 
             parsed = parse_pdf(tmp_path)
             parsed["filename"] = uploaded.name
-            parsed["status"] = "✅ Success"
+            parsed["status"] = "Success"
             results.append(parsed)
         except Exception as e:
             results.append({
@@ -75,7 +73,7 @@ if uploaded_files:
                 "statement_period": None,
                 "payment_due_date": None,
                 "new_balance": None,
-                "status": "❌ Error",
+                "status": "Error",
                 "error": str(e),
             })
         finally:
@@ -85,14 +83,14 @@ if uploaded_files:
                 except Exception:
                     pass
     
-    status_text.text("✅ Processing complete!")
+    status_text.text("Processing complete")
     progress_bar.empty()
 
     # Create DataFrame
     df = pd.DataFrame(results)
     
     # Summary statistics
-    st.subheader("📊 Processing Summary")
+    st.subheader("Processing Summary")
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
@@ -110,7 +108,7 @@ if uploaded_files:
     st.markdown("---")
     
     # Display results
-    st.subheader("📋 Parsed Results")
+    st.subheader("Extraction Results")
     
     # Reorder columns for better display
     display_columns = ["status", "filename", "issuer", "cardholder_name", "card_last4", 
@@ -130,14 +128,14 @@ if uploaded_files:
     
     # Download options
     st.markdown("---")
-    st.subheader("💾 Download Options")
+    st.subheader("Export Options")
     
     col1, col2 = st.columns(2)
     
     with col1:
         csv = df.to_csv(index=False).encode("utf-8")
         st.download_button(
-            "📥 Download as CSV",
+            "Download CSV",
             data=csv,
             file_name=f"credit_card_statements_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
             mime="text/csv",
@@ -148,7 +146,7 @@ if uploaded_files:
         # JSON download
         json_str = df.to_json(orient="records", indent=2)
         st.download_button(
-            "📥 Download as JSON",
+            "Download JSON",
             data=json_str,
             file_name=f"credit_card_statements_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
             mime="application/json",
@@ -157,54 +155,49 @@ if uploaded_files:
     
     # Detailed view
     st.markdown("---")
-    st.subheader("🔍 Detailed View")
+    st.subheader("Detailed View")
     
     for idx, row in enumerate(results):
-        # Color code based on success/error
-        if "error" in row and row["error"]:
-            icon = "❌"
-            color = "red"
-        else:
-            icon = "✅"
-            color = "green"
+        status_prefix = "[ERROR]" if ("error" in row and row["error"]) else "[OK]"
         
-        with st.expander(f"{icon} {row.get('filename', f'File {idx + 1}')}"):
+        with st.expander(f"{status_prefix} {row.get('filename', f'File {idx + 1}')}"):
             if "error" in row and row["error"]:
-                st.error(f"**Error:** {row['error']}")
+                st.error(f"Processing Error: {row['error']}")
             
             col1, col2 = st.columns(2)
             
             with col1:
-                st.write("**🏦 Issuer:**", row.get("issuer", "Not detected"))
-                st.write("**👤 Cardholder:**", row.get("cardholder_name", "Not found"))
-                st.write("**💳 Card Last 4:**", row.get("card_last4", "Not found"))
+                st.write("**Issuer:**", row.get("issuer", "Not detected"))
+                st.write("**Cardholder:**", row.get("cardholder_name", "Not found"))
+                st.write("**Card Last 4:**", row.get("card_last4", "Not found"))
             
             with col2:
-                st.write("**📅 Statement Period:**", row.get("statement_period", "Not found"))
-                st.write("**⏰ Payment Due:**", row.get("payment_due_date", "Not found"))
-                st.write("**💰 New Balance:**", row.get("new_balance", "Not found"))
+                st.write("**Statement Period:**", row.get("statement_period", "Not found"))
+                st.write("**Payment Due:**", row.get("payment_due_date", "Not found"))
+                st.write("**New Balance:**", row.get("new_balance", "Not found"))
 
 else:
-    st.info("👆 Upload one or more PDF credit card statements to begin parsing.")
+    st.info("Upload one or more PDF credit card statements to begin processing.")
     
-    # Add some helpful information
-    with st.expander("ℹ️ How to use this tool"):
+    # Add helpful information
+    with st.expander("Usage Instructions"):
         st.markdown("""
-        ### Instructions:
-        1. **Gather your statements**: Collect credit card statement PDFs from any of the supported issuers
-        2. **Upload files**: Click the upload button above and select one or more PDF files
-        3. **Wait for processing**: The app will automatically extract key information from each statement
-        4. **Review results**: Check the parsed data in the table and detailed views
-        5. **Download**: Export your results as CSV or JSON for further analysis
+        ### How to Use:
+        1. Collect credit card statement PDFs from supported issuers
+        2. Click the upload button and select one or more PDF files
+        3. Wait for automatic data extraction to complete
+        4. Review extracted data in the results table
+        5. Export results as CSV or JSON format
         
-        ### Privacy Note:
-        - All processing happens locally on your machine
-        - No data is sent to external servers
-        - Files are temporarily stored during processing and immediately deleted
-        - Keep your statements confidential and delete exports when done
+        ### Privacy Notice:
+        - All data processing occurs locally
+        - No external server communication
+        - Temporary files are automatically deleted after processing
+        - User is responsible for securing exported data files
         
-        ### Troubleshooting:
-        - If a statement fails to parse, try checking if it's a valid PDF
-        - Some statements may have non-standard formats that require manual review
-        - Ensure the PDF is not password-protected or corrupted
+        ### Technical Notes:
+        - Supported file format: PDF only
+        - Password-protected PDFs are not supported
+        - Non-standard statement formats may require manual verification
+        - Processing time varies based on file size and complexity
         """)

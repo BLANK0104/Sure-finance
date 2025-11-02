@@ -383,41 +383,41 @@ class MockStatementGenerator:
         """Generate multiple statements for each issuer."""
         generated_files = []
         
-        print("🏦 Generating mock credit card statements...\n")
+        print("Generating mock credit card statements...\n")
         
         for i in range(num_each):
             # Chase
             filename = f"chase_statement_{i+1}.pdf"
             filepath = self.generate_chase_statement(filename)
             generated_files.append(filepath)
-            print(f"✅ Generated: {filename}")
+            print(f"Generated: {filename}")
             
             # Bank of America
             filename = f"bofa_statement_{i+1}.pdf"
             filepath = self.generate_bofa_statement(filename)
             generated_files.append(filepath)
-            print(f"✅ Generated: {filename}")
+            print(f"Generated: {filename}")
             
             # Citi
             filename = f"citi_statement_{i+1}.pdf"
             filepath = self.generate_citi_statement(filename)
             generated_files.append(filepath)
-            print(f"✅ Generated: {filename}")
+            print(f"Generated: {filename}")
             
             # American Express
             filename = f"amex_statement_{i+1}.pdf"
             filepath = self.generate_amex_statement(filename)
             generated_files.append(filepath)
-            print(f"✅ Generated: {filename}")
+            print(f"Generated: {filename}")
             
             # Capital One
             filename = f"capital_one_statement_{i+1}.pdf"
             filepath = self.generate_capital_one_statement(filename)
             generated_files.append(filepath)
-            print(f"✅ Generated: {filename}")
+            print(f"Generated: {filename}")
         
-        print(f"\n🎉 Successfully generated {len(generated_files)} mock statements!")
-        print(f"📁 Location: {os.path.abspath(self.output_dir)}")
+        print(f"\nSuccessfully generated {len(generated_files)} mock statements")
+        print(f"Location: {os.path.abspath(self.output_dir)}")
         
         return generated_files
 
@@ -434,14 +434,6 @@ def main():
     
     # Generate 2 statements for each issuer (10 total)
     files = generator.generate_all_statements(num_each=2)
-    
-    print("\n" + "="*60)
-    print("Next Steps:")
-    print("="*60)
-    print("1. Run: streamlit run app.py")
-    print("2. Upload the generated PDFs from 'mock_statements' folder")
-    print("3. Review the parsed data")
-    print("\nNote: These are mock statements for testing only!")
 
 
 if __name__ == "__main__":
